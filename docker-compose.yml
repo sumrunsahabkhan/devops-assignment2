@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+
+  user-frontend:
+    build: ./user-frontend
+    container_name: user-frontend
+    env_file:
+      - ./user-frontend/.env
+    depends_on:
+      - backend
+
+  admin-frontend:
+    build: ./admin-frontend
+    container_name: admin-frontend
+    env_file:
+      - ./admin-frontend/.env
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+      - user-frontend
+      - admin-frontend
+
