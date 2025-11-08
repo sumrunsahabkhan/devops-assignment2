@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent { label 'ubuntu3' }
 
     environment {
         DOCKER_COMPOSE_CMD = 'docker compose'
